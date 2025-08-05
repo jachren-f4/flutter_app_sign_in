@@ -1,0 +1,26 @@
+name: Claude Code
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, edited, synchronize]
+  pull_request_review_comment:
+    types: [created, edited]
+
+jobs:
+  claude-code:
+    if: contains(github.event.comment.body, '@claude-code') || contains(github.event.issue.body, '@claude-code') || contains(github.event.pull_request.body, '@claude-code') || contains(github.event.review.body, '@claude-code')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Claude Code
+        uses: anthropics/claude-code-github-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
